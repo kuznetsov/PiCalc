@@ -23,6 +23,11 @@ android {
 }
 
 dependencies {
+    def apfloat_version = '1.8.2'
+    def arch_version = '1.1.1'
+    def rx_version = '2.2.3'
+    def koin_version = '1.0.2'
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -31,6 +36,18 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'org.apfloat:apfloat:1.8.2'
+    // Chudnovsky algorithm
+    implementation "org.apfloat:apfloat:$apfloat_version"
     implementation project(':chudnovsky')
+
+    // RxJava2
+    implementation "io.reactivex.rxjava2:rxjava:$rx_version"
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$arch_version"
+
+    // Koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation 'com.android.support:design:28.0.0'
 }
