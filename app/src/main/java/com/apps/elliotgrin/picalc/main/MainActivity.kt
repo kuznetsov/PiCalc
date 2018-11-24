@@ -13,10 +13,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
 
+    private val mainViewModel: MainViewModel by viewModel()
+
     override val layoutId: Int
         get() = R.layout.activity_main
-
-    private val mainViewModel: MainViewModel by viewModel()
 
     override fun created() {
 

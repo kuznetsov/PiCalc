@@ -9,7 +9,6 @@ class MainViewModel : BaseViewModel() {
 
     val piNumberData: MutableLiveData<String?> by lazy { MutableLiveData<String?>() }
 
-
     fun run() = launch {
         piObservable
             .subscribeOn(Schedulers.computation())
@@ -23,3 +22,5 @@ class MainViewModel : BaseViewModel() {
     }
 
 }
+
+private data class State(val k: Int)
