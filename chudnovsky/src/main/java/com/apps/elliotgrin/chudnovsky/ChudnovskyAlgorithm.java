@@ -105,7 +105,7 @@ public class ChudnovskyAlgorithm {
      * @param precision
      * @return mutually exclusive ranges that can run executed in parallel.
      */
-    public static List<Range> calculateTermRanges(long numberOfRanges, long precision) {
+    private static List<Range> calculateTermRanges(long numberOfRanges, long precision) {
         if (numberOfRanges <= 0) {
             throw new IllegalArgumentException("Number of ranges should be positive.");
         }
@@ -140,7 +140,7 @@ public class ChudnovskyAlgorithm {
      * @param precision desired for return value
      * @return Pair contains a_sum and b_sum.  To be feed into {@link ChudnovskyAlgorithm#merge(List, long)} ;
      */
-    public static Pair<Apfloat, Apfloat> calculateTermSums(Range range, long precision) {
+    private static Pair<Apfloat, Apfloat> calculateTermSums(Range range, long precision) {
         // need one extra place for the 3, and one extra place for some rounding issues
         precision = precision + 2;
         Apfloat negativeOne = new Apfloat(-1l);
@@ -187,7 +187,7 @@ public class ChudnovskyAlgorithm {
      * @param precision desired for return value
      * @return mathematical constant pi
      */
-    public static Apfloat merge(List<Pair<Apfloat, Apfloat>> termSums, long precision) {
+    private static Apfloat merge(List<Pair<Apfloat, Apfloat>> termSums, long precision) {
         Apfloat a_sum = new Apfloat(0l);
         Apfloat b_sum = new Apfloat(0l);
 
