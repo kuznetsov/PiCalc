@@ -4,24 +4,48 @@ import java.util.Date
 import java.util.Scanner
 
 fun main(args: Array<String>) {
+
     println("Enter k:")
     val scanner = Scanner(System.`in`)
     val k = scanner.nextLong()
 
-    // Single threaded test
+    testAll(k)
+}
 
+private fun testAll(k: Long) {
+
+    // Single threaded:
+    println("----- Single threaded test: ----- ")
+    testMemoization(k, false)
+
+    // Multithreaded
+    println("----- Multithreaded test: ----- ")
+    testMemoization(k, true)
+}
+
+private fun testMemoization(k: Long, multiThreaded: Boolean) {
+    println("Without memoization:")
     var start = Date()
-    var pi = calculatePi(k).toString(true)
-    var time: Double? = (Date().time - start.time) / 1000.0
-    println("Single threaded test:")
-    println("Pi = " + pi + ";\nTime = " + time!!.toString() + " s.")
-    println()
+    calcInCycle(k, multiThreaded, false)
+    var time = (Date().time - start.time) / 1000.0
+    printTime(time)
 
-    // Multithreaded test
-
+    println("With memoization:")
     start = Date()
-    pi = calculatePi(k, 4)!!.toString(true)
+    calcInCycle(k, false, true)
     time = (Date().time - start.time) / 1000.0
-    println("Multithreaded test")
-    println("Pi = " + pi + ";\nTime = " + time.toString() + " s.")
+    printTime(time)
+    println()
+}
+
+private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
+    val alg = ChudnovskyAlgorithm()
+    for (i in 1..k) {
+        if (multiThreaded) alg.calculatePi(i, 4, withMem)
+        else alg.calculatePi(i, withMem)
+    }
+}
+
+private fun printTime(time: Double) {
+    println("Time = $time sec")
 }
