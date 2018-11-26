@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
         })
         run_fab.setOnClickListener { mainViewModel.run() }
 
-        bindFab()
+//        bindFab()
 
         /*run_fab.setOnClickListener {
             val s = input_edit_text.text.toString()
