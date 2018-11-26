@@ -4,7 +4,7 @@ import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
 import android.os.AsyncTask
 import android.view.View
-import com.apps.elliotgrin.chudnovsky.ChudnovskyAlgorithm
+import com.apps.elliotgrin.chudnovsky.calculatePi
 import com.apps.elliotgrin.picalc.R
 import com.apps.elliotgrin.picalc.base.BaseActivity
 import com.apps.elliotgrin.picalc.extensions.setVisible
@@ -63,7 +63,7 @@ class MainActivity : BaseActivity() {
         }
 
         override fun doInBackground(vararg p0: Unit?): String {
-            return "${ChudnovskyAlgorithm.calculatePi(k)}"
+            return "${calculatePi(k)}"
         }
 
         override fun onPostExecute(result: String?) {

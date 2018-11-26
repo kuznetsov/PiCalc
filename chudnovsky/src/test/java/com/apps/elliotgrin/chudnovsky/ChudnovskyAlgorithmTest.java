@@ -3,6 +3,7 @@ package com.apps.elliotgrin.chudnovsky;
 import org.apfloat.Apfloat;
 import org.junit.Test;
 
+import static com.apps.elliotgrin.chudnovsky.ChudnovskyAlgorithmKt.calculatePi;
 import static org.junit.Assert.assertEquals;
 
 public class ChudnovskyAlgorithmTest {
@@ -10,35 +11,35 @@ public class ChudnovskyAlgorithmTest {
     @Test
     public void testPrecision1() {
         Apfloat pi1 = new Apfloat("3.1");
-        assertEquals(pi1, ChudnovskyAlgorithm.calculatePi(1l));
+        assertEquals(pi1, calculatePi(1l));
     }
 
     @Test
     public void testPrecision2() {
         Apfloat pi2 = new Apfloat("3.14");
-        assertEquals(pi2, ChudnovskyAlgorithm.calculatePi(2l));
+        assertEquals(pi2, calculatePi(2l));
     }
 
     @Test
     public void testPrecision10() {
         Apfloat pi10 = new Apfloat("3.1415926535");
-        assertEquals(pi10, ChudnovskyAlgorithm.calculatePi(10l));
+        assertEquals(pi10, calculatePi(10l));
     }
 
     @Test
     public void testDoublePrecision() {
-        assertEquals(new Apfloat(Math.PI), ChudnovskyAlgorithm.calculatePi(15l));
+        assertEquals(new Apfloat(Math.PI), calculatePi(15l));
     }
 
     @Test
     public void testPrecision1000() {
         Apfloat pi1000 = new Apfloat("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989");
-        assertEquals(pi1000, ChudnovskyAlgorithm.calculatePi(1000l));
+        assertEquals(pi1000, calculatePi(1000l));
     }
 
     @Test
     public void testPrecision10000() {
-        System.out.println("PI: " + ChudnovskyAlgorithm.calculatePi(10000l));
+        System.out.println("PI: " + calculatePi(10000l));
     }
 
 }
