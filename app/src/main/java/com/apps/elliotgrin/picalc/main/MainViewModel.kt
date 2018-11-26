@@ -23,4 +23,4 @@ class MainViewModel : BaseViewModel() {
 
 }
 
-private data class State(val k: Int)
+private data class State(val k: Int, val pi: String)
