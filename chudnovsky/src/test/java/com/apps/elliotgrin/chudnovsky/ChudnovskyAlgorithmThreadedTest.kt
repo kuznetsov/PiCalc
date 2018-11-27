@@ -11,7 +11,7 @@ class ChudnovskyAlgorithmThreadedTest {
     @Test
     fun testSingleThreaded() {
         val precision = 200L
-        println("single-threaded Pi with precision of " + precision + ": " + alg.calculatePi(precision, false) + "\n")
+        println("single-threaded Pi with precision of " + precision + ": " + alg.calculatePi(precision) + "\n")
     }
 
     @Test
@@ -21,8 +21,7 @@ class ChudnovskyAlgorithmThreadedTest {
         println(
             "multi-threaded (" + numberOfThreads + " threads) Pi with precision of " + precision + ": " + alg.calculatePi(
                 precision,
-                numberOfThreads,
-                true
+                numberOfThreads
             ) + "\n"
         )
     }
@@ -33,7 +32,7 @@ class ChudnovskyAlgorithmThreadedTest {
         while (precision <= Math.pow(2.0, 15.0)) {
 
             var startTime = System.nanoTime()
-            val singleThreadedPi = alg.calculatePi(precision, false)
+            val singleThreadedPi = alg.calculatePi(precision)
             var singleThreadedDuration = System.nanoTime() - startTime
             if (singleThreadedDuration > 0) {
                 singleThreadedDuration /= 1000000
@@ -44,7 +43,7 @@ class ChudnovskyAlgorithmThreadedTest {
             for (numberOfThreads in 1..8) {
 
                 startTime = System.nanoTime()
-                val multiThreadedPi = alg.calculatePi(precision, numberOfThreads, false)
+                val multiThreadedPi = alg.calculatePi(precision, numberOfThreads)
                 var multiThreadedDuration = System.nanoTime() - startTime
                 if (multiThreadedDuration > 0) {
                     multiThreadedDuration /= 1000000
@@ -53,7 +52,7 @@ class ChudnovskyAlgorithmThreadedTest {
                 println("execution time: $multiThreadedDuration ms")
                 if (singleThreadedDuration > 0 && multiThreadedDuration > 0) {
                     println(
-                        "% speed increase with " + numberOfThreads + " threads, from single threaded: " + String.format(
+                        "% speed increase with $numberOfThreads threads, from single threaded: " + String.format(
                             "%.2f",
                             100.0 * (1.0 - multiThreadedDuration.toDouble() / singleThreadedDuration)
                         ) + "%\n"

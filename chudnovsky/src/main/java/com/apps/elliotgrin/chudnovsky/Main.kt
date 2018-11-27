@@ -9,9 +9,16 @@ fun main(args: Array<String>) {
     val scanner = Scanner(System.`in`)
     val k = scanner.nextLong()
 
-    testAll(k)
+    val alg = ChudnovskyAlgorithm()
+
+    for (i in 1..k) {
+        val pi = alg.calculatePiWithMemoization(i)
+        println("${if (i < 10) "0$i" else "$i"} : $pi")
+    }
 }
 
+
+/*
 private fun testAll(k: Long) {
 
     // Single threaded:
@@ -42,7 +49,7 @@ private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
     val alg = ChudnovskyAlgorithm()
     for (i in 1..k) {
         val pi = if (multiThreaded) alg.calculatePi(i, 4, withMem)
-        else alg.calculatePi(i, withMem)
+        else alg.calculatePiWithMemoization(i)
         println("$i : $pi")
     }
     alg.clearCache()
@@ -51,3 +58,4 @@ private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
 private fun printTime(time: Double) {
     println("Time = $time sec")
 }
+*/

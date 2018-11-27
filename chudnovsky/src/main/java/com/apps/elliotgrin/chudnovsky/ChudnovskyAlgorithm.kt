@@ -30,7 +30,7 @@ class ChudnovskyAlgorithm {
     /**
      * Finds the mathematical constant pi to `precision` number of digits. Single-threaded.
      */
-    fun calculatePi(prec: Long, withMem: Boolean): Apfloat {
+    fun calculatePi(prec: Long): Apfloat {
         var precision = prec
         // need one extra place for the 3, and one extra place for some rounding issues
         precision += 2
@@ -49,16 +49,44 @@ class ChudnovskyAlgorithm {
         val numberOfLoopsToRun = Apfloat(precision, precision).divide(DIGITS_PER_TERM).add(Apfloat.ONE).toLong()
 
         while (k.toLong() < numberOfLoopsToRun) {
-            if (withMem) {
-                val args = aK.add(k).hashCode()
-                aK = if (cache[args] != null) {
-                    cache[args]!!
-                } else {
-                    cache[args] = calculateAk(aK, k, C3_OVER_24)
-                    cache[args]!!
-                }
+            aK = calculateAk(aK, k, C3_OVER_24)
+            aSum = aSum.add(aK)
+            bSum = bSum.add(k.multiply(aK))
+            k = k.add(Apfloat.ONE)
+        }
+
+        val total = Apfloat(13591409L).multiply(aSum).add(Apfloat(545140134L).multiply(bSum))
+
+        val sqrtTenThousandAndFive = ApfloatMath.sqrt(Apfloat(10005L, precision))
+
+        return Apfloat(426880L).multiply(sqrtTenThousandAndFive).divide(total).precision(precision - 1)
+    }
+
+    fun calculatePiWithMemoization(prec: Long): Apfloat {
+        var precision = prec
+        // need one extra place for the 3, and one extra place for some rounding issues
+        precision += 2
+
+        val C3_OVER_24 = C.multiply(C).multiply(C).divide(Apfloat(24, precision))
+        val DIGITS_PER_TERM = ApfloatMath.log(C3_OVER_24.divide(Apfloat(72, precision)), Apfloat(10L))
+
+        // find the first term in the series
+        var k = Apfloat(0L)
+        var aK = Apfloat(1L, precision)
+
+        var aSum = Apfloat(1L)
+        var bSum = Apfloat(0L)
+        k = k.add(Apfloat.ONE)
+
+        val numberOfLoopsToRun = Apfloat(precision, precision).divide(DIGITS_PER_TERM).add(Apfloat.ONE).toLong()
+
+        while (k.toLong() < numberOfLoopsToRun) {
+            val key = "$aK|$k|$C3_OVER_24".hashCode()
+            aK = if (cache.containsKey(key)) {
+                cache[key]!!
             } else {
-                aK = calculateAk(aK, k, C3_OVER_24)
+                cache[key] = calculateAk(aK, k, C3_OVER_24)
+                cache[key]!!
             }
 
             aSum = aSum.add(aK)
@@ -76,13 +104,13 @@ class ChudnovskyAlgorithm {
     /**
      * Finds the mathematical constant pi to `precision` number of digits. Multi-threaded.
      */
-    fun calculatePi(precision: Long, numberOfThreads: Int, withMem: Boolean): Apfloat? {
+    fun calculatePi(precision: Long, numberOfThreads: Int): Apfloat? {
         val ranges = calculateTermRanges(numberOfThreads.toLong(), precision)
 
         val executor = Executors.newFixedThreadPool(ranges.size)
         val futures = ArrayList<Future<Pair<Apfloat, Apfloat>>>(ranges.size)
         for (r in ranges) {
-            futures.add(executor.submit(Callable { calculateTermSums(r, precision, withMem) }))
+            futures.add(executor.submit(Callable { calculateTermSums(r, precision) }))
         }
         executor.shutdown()
         try {
@@ -126,7 +154,7 @@ class ChudnovskyAlgorithm {
     /**
      * Method to be run in parallel.
      */
-    private fun calculateTermSums(range: Range, prec: Long,withMem: Boolean): Pair<Apfloat, Apfloat> {
+    private fun calculateTermSums(range: Range, prec: Long): Pair<Apfloat, Apfloat> {
         var precision = prec
         // need one extra place for the 3, and one extra place for some rounding issues
         precision += 2
@@ -150,18 +178,7 @@ class ChudnovskyAlgorithm {
         k = k.add(Apfloat.ONE)
 
         for (i in range.initialK + 1 until range.finalK) {
-            if (withMem) {
-                val args = aK.add(k).hashCode()
-                aK = if (cache[args] != null) {
-                    cache[args]!!
-                } else {
-                    cache[args] = calculateAk(aK, k, C3_OVER_24)
-                    cache[args]!!
-                }
-            } else {
-                aK = calculateAk(aK, k, C3_OVER_24)
-            }
-
+            aK = calculateAk(aK, k, C3_OVER_24)
             aSum = aSum.add(aK)
             bSum = bSum.add(k.multiply(aK))
             k = k.add(Apfloat.ONE)
