@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ChudnovskyAlgorithmTest {
 
-    ChudnovskyAlgorithm alg = new ChudnovskyAlgorithm();
+    private ChudnovskyAlgorithm alg = new ChudnovskyAlgorithm();
 
     @Test
     public void testPrecision1() {

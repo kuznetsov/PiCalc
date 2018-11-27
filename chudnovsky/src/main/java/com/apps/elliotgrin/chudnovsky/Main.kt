@@ -41,9 +41,11 @@ private fun testMemoization(k: Long, multiThreaded: Boolean) {
 private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
     val alg = ChudnovskyAlgorithm()
     for (i in 1..k) {
-        if (multiThreaded) alg.calculatePi(i, 4, withMem)
+        val pi = if (multiThreaded) alg.calculatePi(i, 4, withMem)
         else alg.calculatePi(i, withMem)
+        println("$i : $pi")
     }
+    alg.clearCache()
 }
 
 private fun printTime(time: Double) {

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ChudnovskyAlgorithmThreadedTest {
 
-    ChudnovskyAlgorithm alg = new ChudnovskyAlgorithm();
+    private ChudnovskyAlgorithm alg = new ChudnovskyAlgorithm();
     
     @Test
     public void testSingleThreaded() {
@@ -19,7 +19,7 @@ public class ChudnovskyAlgorithmThreadedTest {
     public void testMultiThreaded() {
         long precision = 200l;
         int numberOfThreads = 4;
-        System.out.println("multi-threaded (" + numberOfThreads + " threads) Pi with precision of " + precision + ": " + alg.calculatePi(precision, numberOfThreads) + "\n");
+        System.out.println("multi-threaded (" + numberOfThreads + " threads) Pi with precision of " + precision + ": " + alg.calculatePi(precision, numberOfThreads, true) + "\n");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ChudnovskyAlgorithmThreadedTest {
             for (int numberOfThreads = 1; numberOfThreads <= 8; numberOfThreads++) {
 
                 startTime = System.nanoTime();
-                Apfloat multiThreadedPi = alg.calculatePi(precision, numberOfThreads);
+                Apfloat multiThreadedPi = alg.calculatePi(precision, numberOfThreads, true);
                 long multiThreadedDuration = (System.nanoTime() - startTime);
                 if (multiThreadedDuration > 0) {
                     multiThreadedDuration /= 1000000;
