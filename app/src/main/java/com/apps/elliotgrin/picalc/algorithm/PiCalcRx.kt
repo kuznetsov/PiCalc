@@ -9,7 +9,7 @@ fun piObservable(alg: ChudnovskyAlgorithm): Observable<String> =
             var k = 1L
             while (true) {
                 try {
-                    val pi = alg.calculatePi(k, 4).toString()
+                    val pi = alg.calculatePi(k).toString()
                     emitter.onNext(pi)
                     k++
                 } catch (e: Exception) {

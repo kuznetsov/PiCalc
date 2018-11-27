@@ -9,16 +9,10 @@ fun main(args: Array<String>) {
     val scanner = Scanner(System.`in`)
     val k = scanner.nextLong()
 
-    val alg = ChudnovskyAlgorithm()
-
-    for (i in 1..k) {
-        val pi = alg.calculatePiWithMemoization(i)
-        println("${if (i < 10) "0$i" else "$i"} : $pi")
-    }
+    testAll(k)
 }
 
 
-/*
 private fun testAll(k: Long) {
 
     // Single threaded:
@@ -37,9 +31,11 @@ private fun testMemoization(k: Long, multiThreaded: Boolean) {
     var time = (Date().time - start.time) / 1000.0
     printTime(time)
 
+    if (multiThreaded) return
+
     println("With memoization:")
     start = Date()
-    calcInCycle(k, false, true)
+    calcInCycle(k, multiThreaded, true)
     time = (Date().time - start.time) / 1000.0
     printTime(time)
     println()
@@ -48,14 +44,18 @@ private fun testMemoization(k: Long, multiThreaded: Boolean) {
 private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
     val alg = ChudnovskyAlgorithm()
     for (i in 1..k) {
-        val pi = if (multiThreaded) alg.calculatePi(i, 4, withMem)
-        else alg.calculatePiWithMemoization(i)
-        println("$i : $pi")
+
+        when {
+            !multiThreaded && !withMem -> alg.calculatePi(k)
+            !multiThreaded && withMem -> alg.calculatePiWithMemoization(k)
+            multiThreaded -> alg.calculatePi(k, 4)
+        }
+
     }
+
     alg.clearCache()
 }
 
 private fun printTime(time: Double) {
     println("Time = $time sec")
 }
-*/

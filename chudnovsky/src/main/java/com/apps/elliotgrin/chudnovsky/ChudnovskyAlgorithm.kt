@@ -19,7 +19,7 @@ private val C = Apfloat(640320L)
 class ChudnovskyAlgorithm {
 
     // Cache structure used in memoization
-    val cache = mutableMapOf<Int, Apfloat>()
+    val cache = mutableMapOf<TripleFloat, Apfloat>()
 
     // Clear cache data
     fun clearCache() = cache.clear()
@@ -63,12 +63,11 @@ class ChudnovskyAlgorithm {
     }
 
     fun calculatePiWithMemoization(prec: Long): Apfloat {
-        var precision = prec
         // need one extra place for the 3, and one extra place for some rounding issues
-        precision += 2
+        val precision = prec + 2
 
-        val C3_OVER_24 = C.multiply(C).multiply(C).divide(Apfloat(24, precision))
-        val DIGITS_PER_TERM = ApfloatMath.log(C3_OVER_24.divide(Apfloat(72, precision)), Apfloat(10L))
+        val c3Over24 = C.multiply(C).multiply(C).divide(Apfloat(24, precision))
+        val digitsPerTerm = ApfloatMath.log(c3Over24.divide(Apfloat(72, precision)), Apfloat(10L))
 
         // find the first term in the series
         var k = Apfloat(0L)
@@ -78,14 +77,14 @@ class ChudnovskyAlgorithm {
         var bSum = Apfloat(0L)
         k = k.add(Apfloat.ONE)
 
-        val numberOfLoopsToRun = Apfloat(precision, precision).divide(DIGITS_PER_TERM).add(Apfloat.ONE).toLong()
+        val numberOfLoopsToRun = Apfloat(precision, precision).divide(digitsPerTerm).add(Apfloat.ONE).toLong()
 
         while (k.toLong() < numberOfLoopsToRun) {
-            val key = "$aK|$k|$C3_OVER_24".hashCode()
+            val key = TripleFloat(aK, k, c3Over24)
             aK = if (cache.containsKey(key)) {
                 cache[key]!!
             } else {
-                cache[key] = calculateAk(aK, k, C3_OVER_24)
+                cache[key] = calculateAk(aK, k, c3Over24)
                 cache[key]!!
             }
 
@@ -155,11 +154,10 @@ class ChudnovskyAlgorithm {
      * Method to be run in parallel.
      */
     private fun calculateTermSums(range: Range, prec: Long): Pair<Apfloat, Apfloat> {
-        var precision = prec
         // need one extra place for the 3, and one extra place for some rounding issues
-        precision += 2
+        val precision = prec + 2
 
-        val C3_OVER_24 = C.multiply(C).multiply(C).divide(Apfloat(24, precision))
+        val c3Over24 = C.multiply(C).multiply(C).divide(Apfloat(24, precision))
 
         // find the first term in the series
         var k = Apfloat(range.initialK)
@@ -178,7 +176,7 @@ class ChudnovskyAlgorithm {
         k = k.add(Apfloat.ONE)
 
         for (i in range.initialK + 1 until range.finalK) {
-            aK = calculateAk(aK, k, C3_OVER_24)
+            aK = calculateAk(aK, k, c3Over24)
             aSum = aSum.add(aK)
             bSum = bSum.add(k.multiply(aK))
             k = k.add(Apfloat.ONE)
@@ -247,4 +245,18 @@ class ChudnovskyAlgorithm {
     }
 
     // endregion
+}
+
+data class TripleFloat(val a: Apfloat, val b: Apfloat, val c: Apfloat) {
+
+    override fun hashCode() = a.hashCode() + b.hashCode() + c.hashCode()
+
+    override fun equals(other: Any?): Boolean =
+        if (other is TripleFloat) {
+            a == other.a && a.precision() == other.a.precision() &&
+                    b == other.b && b.precision() == other.b.precision() &&
+                    c == other.c && c.precision() == other.c.precision()
+        } else {
+            false
+        }
 }
