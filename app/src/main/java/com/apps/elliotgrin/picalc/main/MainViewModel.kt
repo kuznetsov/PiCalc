@@ -10,16 +10,16 @@ class MainViewModel : BaseViewModel() {
 
     val piNumberData: MutableLiveData<String?> by lazy { MutableLiveData<String?>() }
 
-    fun run() = launch {
-        piObservable(ChudnovskyAlgorithm())
-            .subscribeOn(Schedulers.computation())
-            .doOnNext { piNumberData.postValue(it) }
-            .doOnError { piNumberData.postValue(null) }
-            .subscribe()
-    }
+    fun run() {
+        disposables.clear()
 
-    fun stop() {
-
+        launch {
+            piObservable(ChudnovskyAlgorithm())
+                .subscribeOn(Schedulers.computation())
+                .doOnNext { piNumberData.postValue(it) }
+                .doOnError { piNumberData.postValue(null) }
+                .subscribe()
+        }
     }
 
 }

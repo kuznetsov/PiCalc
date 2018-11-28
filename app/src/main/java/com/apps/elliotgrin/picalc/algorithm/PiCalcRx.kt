@@ -7,13 +7,13 @@ import java.lang.Exception
 fun piObservable(alg: ChudnovskyAlgorithm): Observable<String> =
         Observable.create { emitter ->
             var k = 1L
-            while (true) {
+            while (!emitter.isDisposed) {
                 try {
-                    val pi = alg.calculatePi(k).toString()
-                    emitter.onNext(pi)
+                    val pi = alg.calculatePi(k, true).toString()
+                    if (!emitter.isDisposed) emitter.onNext(pi)
                     k++
                 } catch (e: Exception) {
-                    emitter.onError(e)
+                    if (!emitter.isDisposed) emitter.onError(e)
                     break
                 }
             }
