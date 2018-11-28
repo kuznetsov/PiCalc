@@ -31,8 +31,6 @@ private fun testMemoization(k: Long, multiThreaded: Boolean) {
     var time = (Date().time - start.time) / 1000.0
     printTime(time)
 
-    if (multiThreaded) return
-
     println("With memoization:")
     start = Date()
     calcInCycle(k, multiThreaded, true)
@@ -46,9 +44,8 @@ private fun calcInCycle(k: Long, multiThreaded: Boolean, withMem: Boolean) {
     for (i in 1..k) {
 
         when {
-            !multiThreaded && !withMem -> alg.calculatePi(k)
-            !multiThreaded && withMem -> alg.calculatePiWithMemoization(k)
-            multiThreaded -> alg.calculatePi(k, 4)
+            !multiThreaded -> alg.calculatePi(k, withMem)
+            multiThreaded -> alg.calculatePi(k, withMem, 4)
         }
 
     }

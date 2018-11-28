@@ -10,8 +10,8 @@ class MemoizationTest {
     @Test
     fun testMemoization() {
         for (i in 1..1000L) {
-            val piWithoutMem = alg.calculatePi(i)
-            val piWithMem = alg.calculatePiWithMemoization(i)
+            val piWithoutMem = alg.calculatePi(i, false)
+            val piWithMem = alg.calculatePi(i, true)
             println("$i : $piWithMem")
             assertEquals(piWithoutMem, piWithMem)
         }

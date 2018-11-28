@@ -11,7 +11,7 @@ class ChudnovskyAlgorithmThreadedTest {
     @Test
     fun testSingleThreaded() {
         val precision = 200L
-        println("single-threaded Pi with precision of " + precision + ": " + alg.calculatePi(precision) + "\n")
+        println("single-threaded Pi with precision of " + precision + ": " + alg.calculatePi(precision, false) + "\n")
     }
 
     @Test
@@ -21,6 +21,7 @@ class ChudnovskyAlgorithmThreadedTest {
         println(
             "multi-threaded (" + numberOfThreads + " threads) Pi with precision of " + precision + ": " + alg.calculatePi(
                 precision,
+                false,
                 numberOfThreads
             ) + "\n"
         )
@@ -32,7 +33,7 @@ class ChudnovskyAlgorithmThreadedTest {
         while (precision <= Math.pow(2.0, 15.0)) {
 
             var startTime = System.nanoTime()
-            val singleThreadedPi = alg.calculatePi(precision)
+            val singleThreadedPi = alg.calculatePi(precision, false)
             var singleThreadedDuration = System.nanoTime() - startTime
             if (singleThreadedDuration > 0) {
                 singleThreadedDuration /= 1000000
@@ -43,7 +44,7 @@ class ChudnovskyAlgorithmThreadedTest {
             for (numberOfThreads in 1..8) {
 
                 startTime = System.nanoTime()
-                val multiThreadedPi = alg.calculatePi(precision, numberOfThreads)
+                val multiThreadedPi = alg.calculatePi(precision, false, numberOfThreads)
                 var multiThreadedDuration = System.nanoTime() - startTime
                 if (multiThreadedDuration > 0) {
                     multiThreadedDuration /= 1000000
