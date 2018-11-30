@@ -5,14 +5,20 @@ Based on [Chudnovsky pi caclulation algorithm](https://www.craig-wood.com/nick/a
 
 ![alt text](https://www.craig-wood.com/nick/images/math/13e67da9779a237b0d3b4b0fa5d70d12.png)
 
-Use [Java implementation](https://github.com/lemmingapex/ChudnovskyAlgorithm)
+Used [Java implementation](https://github.com/lemmingapex/ChudnovskyAlgorithm)
 
-Import as separate module. Convert Java to Kotlin and add memoization to improve the speed.
+Imported as separate module. Converted Java to Kotlin and added memoization to improve the speed.
 
 Сonducted a series of experiments and found out that single threaded memoization algorithm version is the fastest one.
 
 
-## Here is some time results:
+## Time tests
+
+```kotlin
+for (i in 1..k) {
+    alg.caclulatePi(i) // depends on tested algorithm version
+}
+```
 
 ### k = 100
 
